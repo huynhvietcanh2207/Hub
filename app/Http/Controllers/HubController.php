@@ -37,7 +37,7 @@ class HubController extends Controller
         $companyName = Setting::get('company_name', 'RingNet');
         $companyLogo = Setting::get('company_logo', '/img/logo_ringnet.webp');
         $isAdmin = true;
-        $registrations = \App\Models\DemoRegistration::latest()->get();
+        $registrations = \App\Models\DemoRegistration::latest()->paginate(4);
 
         return view('hub', compact('websites', 'adminEmail', 'companyName', 'companyLogo', 'isAdmin', 'registrations'));
     }
