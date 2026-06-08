@@ -52,7 +52,7 @@
         TOP HEADER BAR (Fixed)
         ═══════════════════════════════════════════════ --}}
         <header class="fixed top-0 left-0 right-0 z-40 animate-fade-in">
-            <div class="bg-white/75 backdrop-blur-2xl border-t-0 border-l-0 border-r-0 rounded-none shadow-sm"
+            <div class="bg-white/35 backdrop-blur-2xl border-t-0 border-l-0 border-r-0 rounded-none shadow-sm"
                 style="border-bottom: 1.5px solid rgba(255,255,255,0.45);">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between h-16 sm:h-20">
@@ -201,8 +201,8 @@
                                     <div class="flex items-center justify-center
                                                 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16
                                                 rounded-[14px] sm:rounded-[18px] mb-2.5 sm:mb-3
-                                                bg-white/60 shadow-sm
-                                                group-hover:shadow-md group-hover:bg-white/80
+                                                bg-white/28 border border-white/35 backdrop-blur-md shadow-sm
+                                                group-hover:shadow-md group-hover:bg-white/40 group-hover:border-white/50
                                                 transition-all duration-300 overflow-hidden">
                                         @if($website->icon_url)
                                             <img src="{{ $website->icon_url }}" alt="{{ $website->name }}"
@@ -251,7 +251,8 @@
                                     <div class="flex items-center justify-center
                                                 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16
                                                 rounded-[14px] sm:rounded-[18px] mb-2.5 sm:mb-3
-                                                bg-gray-100/50 group-hover:bg-green-50/80
+                                                bg-white/28 border border-white/35 backdrop-blur-md
+                                                group-hover:bg-green-500/20 group-hover:border-green-500/40
                                                 transition-all duration-300">
                                         <svg class="w-6 h-6 sm:w-7 sm:h-7 text-gray-400 group-hover:text-green-600 transition-colors duration-300"
                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
