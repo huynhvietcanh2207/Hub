@@ -3,7 +3,14 @@
 @section('content')
     <div x-data="{
             showAddModal: {{ $errors->has('name') || $errors->has('url') || $errors->has('icon_url') ? 'true' : 'false' }},
+            showEditModal: {{ $errors->has('edit_name') || $errors->has('edit_url') || $errors->has('edit_icon_url') || $errors->has('edit_icon_file') ? 'true' : 'false' }},
             showSettingsModal: {{ $errors->has('company_name') || $errors->has('company_logo') || $errors->has('company_logo_file') || $errors->has('admin_email') ? 'true' : 'false' }},
+            editingWebsite: {
+                id: '{{ old('edit_id') }}',
+                name: '{{ addslashes(old('edit_name')) }}',
+                url: '{{ addslashes(old('edit_url')) }}',
+                icon_url: '{{ addslashes(old('edit_icon_url')) }}'
+            },
             showToast: false,
             toastMessage: '',
             toastType: 'success',
@@ -130,6 +137,31 @@
                                           hover:scale-[1.06] hover:-translate-y-1.5
                                           active:scale-[0.97]
                                           cursor-pointer">
+
+                                    {{-- Edit Button (visible on hover, desktop only) --}}
+                                    @if($isAdmin)
+                                        <button type="button"
+                                            @click.prevent.stop="
+                                                editingWebsite = {
+                                                    id: '{{ $website->id }}',
+                                                    name: '{{ addslashes($website->name) }}',
+                                                    url: '{{ addslashes($website->url) }}',
+                                                    icon_url: '{{ addslashes($website->icon_url) }}'
+                                                };
+                                                showEditModal = true;
+                                            "
+                                            class="absolute top-1.5 left-1.5 sm:top-2 sm:left-2
+                                                   opacity-0 group-hover:opacity-100
+                                                   transition-all duration-200 z-10
+                                                   flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full
+                                                   bg-black/5 hover:bg-green-500/15 text-gray-400 hover:text-green-600
+                                                   transition-all duration-200 backdrop-blur-sm">
+                                            <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                        </button>
+                                    @endif
 
                                     {{-- Delete × (visible on hover, desktop only) --}}
                                     @if($isAdmin)
@@ -403,6 +435,131 @@
                                    brand-btn
                                    active:scale-[0.98] transition-all duration-200">
                         Add Website
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {{-- ═══════════════════════════════════════════════
+        EDIT WEBSITE MODAL
+        ═══════════════════════════════════════════════ --}}
+        <div x-show="showEditModal" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+            @keydown.escape.window="showEditModal = false" style="display: none;">
+
+            {{-- Backdrop --}}
+            <div class="absolute inset-0 bg-black/10 backdrop-blur-md" @click="showEditModal = false"></div>
+
+            {{-- Modal Panel --}}
+            <div x-show="showEditModal" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-[0.96] translate-y-3"
+                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 scale-[0.96] translate-y-3"
+                class="relative w-full max-w-sm sm:max-w-md rounded-[28px] glass-modal p-6 sm:p-8">
+
+                {{-- Close --}}
+                <button @click="showEditModal = false" class="absolute top-3.5 right-3.5 sm:top-4 sm:right-4
+                               flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full
+                               bg-black/5 hover:bg-black/10 text-gray-400 hover:text-gray-600
+                               transition-all duration-200">
+                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                {{-- Header --}}
+                <div class="text-center mb-5 sm:mb-6">
+                    <div class="inline-flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl mb-3 sm:mb-4
+                                shadow-lg shadow-green-200/40 brand-gradient">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-semibold text-gray-900/90">Edit Website</h2>
+                    <p class="mt-1 text-xs sm:text-sm text-gray-500/70">Modify your demo website details</p>
+                </div>
+
+                {{-- Form --}}
+                <form :action="'/websites/' + editingWebsite.id" method="POST" enctype="multipart/form-data" class="space-y-3.5 sm:space-y-4">
+                    @csrf
+                    @method('PUT')
+
+                    <input type="hidden" name="edit_id" :value="editingWebsite.id">
+
+                    <div>
+                        <label for="edit-website-name" class="block text-xs sm:text-sm font-medium text-gray-500 mb-1.5">Website Name</label>
+                        <input type="text" id="edit-website-name" name="edit_name" required placeholder="e.g. My Portfolio"
+                            x-model="editingWebsite.name" class="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl
+                                      glass-input text-gray-900 placeholder:text-gray-400
+                                      focus:outline-none transition-all duration-200 text-sm">
+                        @error('edit_name')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="edit-website-url" class="block text-xs sm:text-sm font-medium text-gray-500 mb-1.5">URL</label>
+                        <input type="url" id="edit-website-url" name="edit_url" required placeholder="https://example.com"
+                            x-model="editingWebsite.url" class="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl
+                                      glass-input text-gray-900 placeholder:text-gray-400
+                                      focus:outline-none transition-all duration-200 text-sm">
+                        @error('edit_url')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Website Icon (File or URL) --}}
+                    <div x-data="{ iconType: 'file' }" x-init="$watch('editingWebsite', value => { iconType = value.icon_url && (value.icon_url.startsWith('http') || value.icon_url.startsWith('https')) ? 'url' : 'file' })">
+                        <label class="block text-xs sm:text-sm font-medium text-gray-500 mb-1.5">Website Icon</label>
+
+                        {{-- Toggle between File Upload and URL --}}
+                        <div class="flex gap-2 mb-2">
+                            <button type="button" @click="iconType = 'file'"
+                                    :class="iconType === 'file' ? 'bg-green-700 text-white shadow-sm' : 'bg-black/5 text-gray-600 hover:bg-black/10'"
+                                    class="px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-200 cursor-pointer">
+                                Upload File
+                            </button>
+                            <button type="button" @click="iconType = 'url'"
+                                    :class="iconType === 'url' ? 'bg-green-700 text-white shadow-sm' : 'bg-black/5 text-gray-600 hover:bg-black/10'"
+                                    class="px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-200 cursor-pointer">
+                                URL Link
+                            </button>
+                        </div>
+
+                        {{-- File Input --}}
+                        <div x-show="iconType === 'file'" class="animate-fade-in" style="animation-duration: 200ms;">
+                            <input type="file" id="edit-website-icon-file" name="edit_icon_file" accept="image/*"
+                                   class="w-full px-3.5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl
+                                          glass-input text-gray-900 text-sm focus:outline-none file:mr-4 file:py-1 file:px-3
+                                          file:rounded-lg file:border-0 file:text-xs file:font-semibold
+                                          file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                            @error('edit_icon_file')
+                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- URL Input --}}
+                        <div x-show="iconType === 'url'" class="animate-fade-in" style="animation-duration: 200ms;">
+                            <input type="text" id="edit-website-icon-url" name="edit_icon_url" placeholder="https://example.com/icon.png"
+                                   x-model="editingWebsite.icon_url"
+                                   class="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl
+                                          glass-input text-gray-900 placeholder:text-gray-400
+                                          focus:outline-none transition-all duration-200 text-sm">
+                            @error('edit_icon_url')
+                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-sm font-semibold text-white
+                                   brand-btn
+                                   active:scale-[0.98] transition-all duration-200">
+                        Save Changes
                     </button>
                 </form>
             </div>

@@ -77,6 +77,42 @@ class HubController extends Controller
     }
 
     /**
+     * Update an existing demo website.
+     */
+    public function update(Request $request, DemoWebsite $website)
+    {
+        if (!session('is_admin', false)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $validated = $request->validate([
+            'edit_id' => 'required|integer|exists:demo_websites,id',
+            'edit_name' => 'required|string|max:255',
+            'edit_url'  => 'required|url|max:255',
+            'edit_icon_url' => 'nullable|string|max:255',
+            'edit_icon_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
+
+        $data = [
+            'name' => $validated['edit_name'],
+            'url' => $validated['edit_url'],
+        ];
+
+        if ($request->hasFile('edit_icon_file')) {
+            $file = $request->file('edit_icon_file');
+            $filename = 'icon_custom_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('img'), $filename);
+            $data['icon_url'] = '/img/' . $filename;
+        } else {
+            $data['icon_url'] = $validated['edit_icon_url'] ?? null;
+        }
+
+        $website->update($data);
+
+        return redirect()->back()->with('success', 'Website updated successfully!');
+    }
+
+    /**
      * Delete a demo website.
      */
     public function destroy(DemoWebsite $website)
