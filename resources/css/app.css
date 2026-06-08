@@ -1,0 +1,248 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+
+    /* RingNet Brand Colors */
+    --color-brand-green: #2e7d32;
+    --color-brand-green-light: #4caf50;
+    --color-brand-green-dark: #1b5e20;
+    --color-brand-red: #e53935;
+    --color-brand-red-light: #ef5350;
+    --color-brand-red-dark: #c62828;
+}
+
+/* ═══════════════════════════════════════════════
+   macOS-INSPIRED ANIMATIONS
+   ═══════════════════════════════════════════════ */
+
+@keyframes meshShift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -20px) scale(1.05); }
+    50% { transform: translate(-20px, 15px) scale(0.95); }
+    75% { transform: translate(15px, 25px) scale(1.02); }
+}
+
+@keyframes orbFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-15px) rotate(2deg); }
+    66% { transform: translateY(10px) rotate(-1deg); }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(46, 125, 50, 0.15), 0 0 20px rgba(229, 57, 53, 0.1); }
+    50% { box-shadow: 0 0 35px rgba(46, 125, 50, 0.25), 0 0 35px rgba(229, 57, 53, 0.15); }
+}
+
+@keyframes breathe {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes logoShine {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+/* ═══════════════════════════════════════════════
+   APPLE GLASSMORPHISM UTILITIES
+   ═══════════════════════════════════════════════ */
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(30px) saturate(160%);
+    -webkit-backdrop-filter: blur(30px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.04),
+        0 1px 2px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.65);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.08),
+        0 4px 12px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.glass-modal {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(60px) saturate(200%);
+    -webkit-backdrop-filter: blur(60px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.12),
+        0 8px 24px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(46, 125, 50, 0.4);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.02),
+        0 0 0 3px rgba(46, 125, 50, 0.12);
+}
+
+/* ═══════════════════════════════════════════════
+   RINGNET BRAND GRADIENT
+   ═══════════════════════════════════════════════ */
+
+.brand-gradient {
+    background: linear-gradient(135deg, var(--color-brand-green) 0%, var(--color-brand-red) 100%);
+}
+
+.brand-gradient-text {
+    background: linear-gradient(135deg, var(--color-brand-green) 0%, var(--color-brand-red) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-btn {
+    background: linear-gradient(135deg, var(--color-brand-green) 0%, var(--color-brand-green-dark) 100%);
+    box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
+    transition: all 0.2s ease;
+}
+
+.brand-btn:hover {
+    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
+    background: linear-gradient(135deg, var(--color-brand-green-light) 0%, var(--color-brand-green) 100%);
+}
+
+.brand-btn-red {
+    background: linear-gradient(135deg, var(--color-brand-red) 0%, var(--color-brand-red-dark) 100%);
+    box-shadow: 0 4px 14px rgba(229, 57, 53, 0.25);
+}
+
+/* ═══════════════════════════════════════════════
+   ANIMATION CLASSES
+   ═══════════════════════════════════════════════ */
+
+.animate-mesh { animation: meshShift 20s ease-in-out infinite; }
+.animate-orb { animation: orbFloat 8s ease-in-out infinite; }
+.animate-fade-in { animation: fadeInScale 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-slide-in { animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+.animate-breathe { animation: breathe 4s ease-in-out infinite; }
+
+/* Staggered entry */
+.stagger-1 { animation-delay: 0.04s; }
+.stagger-2 { animation-delay: 0.08s; }
+.stagger-3 { animation-delay: 0.12s; }
+.stagger-4 { animation-delay: 0.16s; }
+.stagger-5 { animation-delay: 0.20s; }
+.stagger-6 { animation-delay: 0.24s; }
+.stagger-7 { animation-delay: 0.28s; }
+.stagger-8 { animation-delay: 0.32s; }
+.stagger-9 { animation-delay: 0.36s; }
+.stagger-10 { animation-delay: 0.40s; }
+.stagger-11 { animation-delay: 0.44s; }
+.stagger-12 { animation-delay: 0.48s; }
+
+/* ═══════════════════════════════════════════════
+   MESH GRADIENT BG  (Green + Red tones for RingNet)
+   ═══════════════════════════════════════════════ */
+
+.mesh-bg {
+    background:
+        radial-gradient(ellipse at 15% 45%, rgba(46, 125, 50, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 20%, rgba(229, 57, 53, 0.09) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 85%, rgba(76, 175, 80, 0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 65%, rgba(229, 115, 115, 0.07) 0%, transparent 50%),
+        linear-gradient(140deg, #f6f8fc 0%, #edf1f7 30%, #f8f0f0 55%, #eef3fa 80%, #f6f8fc 100%);
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE CARD GRID
+   ═══════════════════════════════════════════════ */
+
+.card-grid {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: center;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 480px) {
+    .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 640px) {
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 768px) {
+    .card-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.75rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .card-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .card-grid { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR (macOS-like)
+   ═══════════════════════════════════════════════ */
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 100px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
