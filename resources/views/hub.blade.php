@@ -134,7 +134,7 @@
         <div class="flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-20 pb-12 sm:pb-16 min-h-screen">
 
             {{-- ── GLASS CONTAINER ── --}}
-            <div class="w-full max-w-xs sm:max-w-xl md:max-w-3xl pt-10 lg:max-w-4xl xl:max-w-5xl animate-fade-in">
+            <div class="w-full max-w-xs sm:max-w-xl md:max-w-3xl pt-10 lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl animate-fade-in">
 
                 {{-- ═══════════════════════════════════
                 GLASS PANEL — WEBSITE CARDS
@@ -148,7 +148,7 @@
                             <div class="w-full animate-slide-in stagger-{{ ($index % 12) + 1 }} group">
                                 <a href="{{ $website->url }}" target="_blank" rel="noopener noreferrer"
                                     id="card-{{ $website->id }}" class="relative flex flex-col items-center justify-center
-                                                  aspect-square max-w-[160px] w-full mx-auto
+                                                  aspect-square max-w-[180px] w-full mx-auto
                                                   rounded-[22px] sm:rounded-[26px]
                                                   glass-card p-3 sm:p-4
                                                   transition-all duration-300 ease-out
@@ -231,7 +231,7 @@
 
                                     {{-- Name --}}
                                     <span class="text-[11px] sm:text-xs md:text-sm font-medium text-gray-600
-                                                         text-center leading-tight truncate w-full px-1
+                                                         text-center leading-tight break-words w-full px-1
                                                          group-hover:text-gray-900 transition-colors duration-300">
                                         {{ $website->name }}
                                     </span>
@@ -243,7 +243,7 @@
                         @if($isAdmin)
                             <div class="w-full animate-slide-in stagger-{{ min(($websites->count() % 12) + 1, 12) }}">
                                 <button @click="showAddModal = true" id="btn-add-website" class="flex flex-col items-center justify-center
-                                                       aspect-square max-w-[160px] w-full mx-auto
+                                                       aspect-square max-w-[180px] w-full mx-auto
                                                        rounded-[22px] sm:rounded-[26px]
                                                        border-2 border-dashed border-gray-300/50
                                                        bg-white/20 backdrop-blur-sm
